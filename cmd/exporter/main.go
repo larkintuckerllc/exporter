@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"log"
 	"os"
 
@@ -23,6 +24,21 @@ func main() {
 				Usage:    "service name",
 				Required: true,
 			},
+			&cli.IntFlag{
+				Name:     "start",
+				Usage:    "start hour - between 0 to 23",
+				Required: true,
+			},
+			&cli.IntFlag{
+				Name:     "end",
+				Usage:    "end hour - between 0 to 23",
+				Required: true,
+			},
+			&cli.IntFlag{
+				Name:     "minimum",
+				Usage:    "minimum number of pods - greater than 2",
+				Required: true,
+			},
 			&cli.BoolFlag{
 				Name: "development",
 			},
@@ -31,7 +47,18 @@ func main() {
 			namespace := c.String("namespace")
 			service := c.String("service")
 			development := c.Bool("development")
-			err := exporter.Execute(namespace, service, development)
+			start := c.Int("start")
+			end := c.Int("end")
+			minimum := c.Int("minimum")
+			if start < 0 || start > 23 || end < 0 || end > 23 || start == end {
+				err := errors.New("start and end must be between 0 to 23 and unequal")
+				return err
+			}
+			if minimum < 2 {
+				err := errors.New("minimum must be greater than 2")
+				return err
+			}
+			err := exporter.Execute(namespace, service, development, start, end, minimum)
 			return err
 		},
 	}
