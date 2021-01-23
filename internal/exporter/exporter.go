@@ -5,9 +5,10 @@ import (
 	"time"
 )
 
-func Execute(namespace string, service string) error {
+func Execute(namespace string, service string, development bool) error {
 	fmt.Println(namespace)
 	fmt.Println(service)
+	fmt.Println(development)
 	done := make(chan bool)
 	ticker := time.NewTicker(1 * time.Second)
 	go func() {

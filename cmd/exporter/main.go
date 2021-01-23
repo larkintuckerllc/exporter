@@ -23,11 +23,15 @@ func main() {
 				Usage:    "service name",
 				Required: true,
 			},
+			&cli.BoolFlag{
+				Name: "development",
+			},
 		},
 		Action: func(c *cli.Context) error {
 			namespace := c.String("namespace")
 			service := c.String("service")
-			err := exporter.Execute(namespace, service)
+			development := c.Bool("development")
+			err := exporter.Execute(namespace, service, development)
 			return err
 		},
 	}
