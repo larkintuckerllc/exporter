@@ -13,7 +13,6 @@ import (
 func k8sAuth(development bool) (*kubernetes.Clientset, error) {
 	var config *rest.Config
 	var err error
-	var clientset *kubernetes.Clientset
 	if development {
 		// OUT-OF-CLUSTER
 		home := homedir.HomeDir()
@@ -29,7 +28,7 @@ func k8sAuth(development bool) (*kubernetes.Clientset, error) {
 			return nil, err
 		}
 	}
-	clientset, err = kubernetes.NewForConfig(config)
+	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		return nil, err
 	}
