@@ -12,8 +12,23 @@ func main() {
 	app := &cli.App{
 		Name:  "exporter",
 		Usage: "TODO: usage",
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:  "namespace",
+				Value: "default",
+				Usage: "namespace name",
+			},
+			&cli.StringFlag{
+				Name:     "service",
+				Usage:    "service name",
+				Required: true,
+			},
+		},
 		Action: func(c *cli.Context) error {
-			fmt.Println("TODO: hello world")
+			namespace := c.String("namespace")
+			service := c.String("service")
+			fmt.Println(namespace)
+			fmt.Println(service)
 			return nil
 		},
 	}
