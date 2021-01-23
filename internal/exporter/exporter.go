@@ -2,6 +2,9 @@ package exporter
 
 import (
 	"fmt"
+	"time"
+
+	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func Execute(namespace string, service string, development bool) error {
@@ -14,24 +17,23 @@ func Execute(namespace string, service string, development bool) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(count)
-	fmt.Println(resourceVersion)
-	/*
-		done := make(chan bool)
-		ticker := time.NewTicker(1 * time.Second)
-		go func() {
-			for {
-				select {
-				case <-done:
-					ticker.Stop()
-					return
-				case <-ticker.C:
-					fmt.Println("Hello !!")
-				}
-			}
-		}()
-		time.Sleep(10 * time.Second)
-		done <- true
-	*/
-	return nil
+	listOptions := metaV1.ListOptions{
+		ResourceVersion: resourceVersion,
+	}
+	watcher, err := api.Watch(listOptions)
+	if err != nil {
+		return err
+	}
+	defer watcher.Stop()
+	updater := watcher.ResultChan()
+	ticker := time.NewTicker(1 * time.Second)
+	defer ticker.Stop()
+	for {
+		select {
+		case <-updater:
+			fmt.Println("update")
+		case <-ticker.C:
+			fmt.Println(count)
+		}
+	}
 }
