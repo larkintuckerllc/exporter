@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
+	"github.com/larkintuckerllc/exporter/internal/exporter"
 	"github.com/urfave/cli/v2"
 )
 
@@ -27,9 +27,8 @@ func main() {
 		Action: func(c *cli.Context) error {
 			namespace := c.String("namespace")
 			service := c.String("service")
-			fmt.Println(namespace)
-			fmt.Println(service)
-			return nil
+			err := exporter.Execute(namespace, service)
+			return err
 		},
 	}
 
