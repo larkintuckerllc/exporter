@@ -30,8 +30,11 @@ func Execute(namespace string, service string, development bool) error {
 	defer ticker.Stop()
 	for {
 		select {
-		case <-updater:
-			fmt.Println("update")
+		case update := <-updater:
+			count, err = updateCount(update, service, count)
+			if err != nil {
+				return err
+			}
 		case <-ticker.C:
 			fmt.Println(count)
 		}
