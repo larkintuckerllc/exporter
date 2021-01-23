@@ -1,7 +1,6 @@
 package exporter
 
 import (
-	"fmt"
 	"time"
 
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -36,7 +35,7 @@ func Execute(namespace string, service string, development bool, start int, end 
 				return err
 			}
 		case <-ticker.C:
-			fmt.Println(count)
+			export(start, end, minimum, count)
 		}
 	}
 }
