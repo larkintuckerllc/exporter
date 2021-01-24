@@ -54,5 +54,5 @@ spec:
             configMapKeyRef:
               name: exporter
               key: project
-        image: sckmkny/exporter:0.1.0
+        image: sckmkny/exporter:0.1.1
       serviceAccountName: exporter

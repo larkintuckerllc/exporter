@@ -6,5 +6,5 @@ RUN CGO_ENABLED=0 GOOS=linux go install .
 FROM alpine:latest  
 WORKDIR /root
 COPY --from=builder /go/bin/exporter .
-ENTRYPOINT /root/exporter
+ENTRYPOINT ["/root/exporter"]
 
