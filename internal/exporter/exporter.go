@@ -35,13 +35,11 @@ func Execute(namespace string, app string, start int, end int, minimum int,
 	for {
 		select {
 		case update := <-updater:
-			fmt.Println(update)
-			/*
-				count, err = updateCount(update, service, count)
-				if err != nil {
-					return err
-				}
-			*/
+			pods, err = updatePods(update, pods)
+			if err != nil {
+				return err
+			}
+			fmt.Println(pods)
 		case <-ticker.C:
 			/*
 				if count == 0 {
