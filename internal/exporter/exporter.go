@@ -26,7 +26,7 @@ func Execute(namespace string, service string, start int, end int, minimum int,
 	}
 	defer watcher.Stop()
 	updater := watcher.ResultChan()
-	ticker := time.NewTicker(1 * time.Second)
+	ticker := time.NewTicker(60 * time.Second)
 	defer ticker.Stop()
 	for {
 		select {
