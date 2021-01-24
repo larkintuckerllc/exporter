@@ -5,10 +5,12 @@ metadata:
   labels:
     app: exporter
 data:
+  project: red-forklift-301112 
+  location: us-central1-c
+  cluster: cluster-1
   namespace: namespace-1
-  service: app-1
+  app: app-1
   start: "1"
   end: "23"
   minimum: "3"
-  project: red-forklift-301112 
 

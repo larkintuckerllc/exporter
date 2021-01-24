@@ -17,23 +17,40 @@ spec:
       containers:
       - name: exporter
         args:
+        - --project=$(PROJECT)
+        - --location=$(LOCATION)
+        - --cluster=$(CLUSTER)
         - --namespace=$(NAMESPACE)
-        - --service=$(SERVICE)
+        - --app=$(APP)
         - --start=$(START)
         - --end=$(END)
         - --minimum=$(MINIMUM)
-        - --project=$(PROJECT)
         env:
+        - name: PROJECT
+          valueFrom:
+            configMapKeyRef:
+              name: exporter
+              key: project
+        - name: LOCATION
+          valueFrom:
+            configMapKeyRef:
+              name: exporter
+              key: location
+        - name: CLUSTER
+          valueFrom:
+            configMapKeyRef:
+              name: exporter
+              key: cluster
         - name: NAMESPACE
           valueFrom:
             configMapKeyRef:
               name: exporter
               key: namespace
-        - name: SERVICE
+        - name: APP
           valueFrom:
             configMapKeyRef:
               name: exporter
-              key: service
+              key: app
         - name: START
           valueFrom:
             configMapKeyRef:
@@ -49,10 +66,5 @@ spec:
             configMapKeyRef:
               name: exporter
               key: minimum
-        - name: PROJECT
-          valueFrom:
-            configMapKeyRef:
-              name: exporter
-              key: project
-        image: sckmkny/exporter:0.1.3
+        image: sckmkny/exporter:0.1.4
       serviceAccountName: exporter

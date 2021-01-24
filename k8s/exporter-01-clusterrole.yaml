@@ -7,6 +7,5 @@ metadata:
 rules:
 - apiGroups: [""]
   resources:
-  - endpoints
+  - pods
   verbs: ["get", "list", "watch"]
-

@@ -12,7 +12,7 @@ import (
 func main() {
 	app := &cli.App{
 		Name:  "exporter",
-		Usage: "TODO: usage",
+		Usage: "exports pod metrics",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:     "project",
