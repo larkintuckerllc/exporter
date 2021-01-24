@@ -12,8 +12,10 @@ import (
 	monitoringpb "google.golang.org/genproto/googleapis/monitoring/v3"
 )
 
-func export(start int, end int, minimum int, pods []string, project string,
-	namespace string) error {
+func export(project string, location string, cluster string,
+	namespace string,
+	start int, end int, minimum int,
+	pods []string) error {
 	count := len(pods)
 	hour := time.Now().UTC().Hour()
 	var value int64 = 0
@@ -51,8 +53,8 @@ func export(start int, end int, minimum int, pods []string, project string,
 						Type: "k8s_pod",
 						Labels: map[string]string{
 							"project_id":     project,
-							"location":       "us-central1-c",
-							"cluster_name":   "cluster-1",
+							"location":       location,
+							"cluster_name":   cluster,
 							"namespace_name": namespace,
 							"pod_name":       pod,
 						},
