@@ -12,8 +12,9 @@ import (
 	monitoringpb "google.golang.org/genproto/googleapis/monitoring/v3"
 )
 
-func export(start int, end int, minimum int, count int, project string,
-	namespace string, service string) error {
+func export(start int, end int, minimum int, pods []string, project string,
+	namespace string) error {
+	count := len(pods)
 	hour := time.Now().UTC().Hour()
 	var value int64 = 0
 	if (start < end && hour >= start && hour <= end) || (start > end && (hour >= start || hour <= end)) {
@@ -38,31 +39,33 @@ func export(start int, end int, minimum int, count int, project string,
 			},
 		},
 	}
-	err = client.CreateTimeSeries(ctx, &monitoringpb.CreateTimeSeriesRequest{
-		Name: monitoring.MetricProjectPath(project),
-		TimeSeries: []*monitoringpb.TimeSeries{
-			{
-				Metric: &metricpb.Metric{
-					Type: "custom.googleapis.com/exporter",
-				},
-				Resource: &monitoredrespb.MonitoredResource{
-					Type: "global",
-					Labels: map[string]string{
-						"project_id":     project,
-						"location":       "us-central1",
-						"cluster_name":   "cluster-1",
-						"namespace_name": namespace,
-						"pod_name":       "FUCK ME",
+	for _, pod := range pods {
+		err = client.CreateTimeSeries(ctx, &monitoringpb.CreateTimeSeriesRequest{
+			Name: monitoring.MetricProjectPath(project),
+			TimeSeries: []*monitoringpb.TimeSeries{
+				{
+					Metric: &metricpb.Metric{
+						Type: "custom.googleapis.com/exporter",
+					},
+					Resource: &monitoredrespb.MonitoredResource{
+						Type: "k8s_pod",
+						Labels: map[string]string{
+							"project_id":     project,
+							"location":       "us-central1-c",
+							"cluster_name":   "cluster-1",
+							"namespace_name": namespace,
+							"pod_name":       pod,
+						},
+					},
+					Points: []*monitoringpb.Point{
+						dataPoint,
 					},
 				},
-				Points: []*monitoringpb.Point{
-					dataPoint,
-				},
 			},
-		},
-	})
-	if err != nil {
-		return err
+		})
+		if err != nil {
+			return err
+		}
 	}
 	err = client.Close()
 	if err != nil {

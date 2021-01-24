@@ -15,7 +15,6 @@ func Execute(namespace string, app string, start int, end int, minimum int,
 	}
 	api := clientset.CoreV1().Pods(namespace)
 	pods, resourceVersion, err := initialPods(api, app)
-	fmt.Println(pods)
 	if err != nil {
 		return err
 	}
@@ -41,15 +40,10 @@ func Execute(namespace string, app string, start int, end int, minimum int,
 			}
 			fmt.Println(pods)
 		case <-ticker.C:
-			/*
-				if count == 0 {
-					break
-				}
-				// err = export(start, end, minimum, count, project, namespace, service)
-				if err != nil {
-					return err
-				}
-			*/
+			err = export(start, end, minimum, pods, project, namespace)
+			if err != nil {
+				return err
+			}
 		}
 	}
 }
