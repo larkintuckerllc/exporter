@@ -43,7 +43,7 @@ func export(start int, end int, minimum int, count int, project string,
 		TimeSeries: []*monitoringpb.TimeSeries{
 			{
 				Metric: &metricpb.Metric{
-					Type: "custom.googleapis.com/exporter",
+					Type: "external.googleapis.com/exporter",
 					Labels: map[string]string{
 						"namespace": namespace,
 						"service":   service,
