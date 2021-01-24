@@ -17,12 +17,12 @@ spec:
       containers:
       - name: exporter
         args:
-        - --namespace $(NAMESPACE)
-        - --service $(SERVICE)
-        - --start $(START)
-        - --end $(END)
-        - --minimum $(MINIMUM)
-        - --project $(PROJECT)
+        - --namespace=$(NAMESPACE)
+        - --service=app-1
+        - --start=$(START)
+        - --end=$(END)
+        - --minimum=$(MINIMUM)
+        - --project=$(PROJECT)
         env:
         - name: NAMESPACE
           valueFrom:
@@ -56,4 +56,3 @@ spec:
               key: project
         image: sckmkny/exporter:0.1.0
       serviceAccountName: exporter
-
