@@ -39,6 +39,11 @@ func main() {
 				Usage:    "minimum number of pods - greater than 2",
 				Required: true,
 			},
+			&cli.StringFlag{
+				Name:     "project",
+				Usage:    "GCP project ID",
+				Required: true,
+			},
 			&cli.BoolFlag{
 				Name: "development",
 			},
@@ -46,10 +51,11 @@ func main() {
 		Action: func(c *cli.Context) error {
 			namespace := c.String("namespace")
 			service := c.String("service")
-			development := c.Bool("development")
 			start := c.Int("start")
 			end := c.Int("end")
 			minimum := c.Int("minimum")
+			project := c.String("project")
+			development := c.Bool("development")
 			if start < 0 || start > 23 || end < 0 || end > 23 || start == end {
 				err := errors.New("start and end must be between 0 to 23 and unequal")
 				return err
@@ -58,7 +64,7 @@ func main() {
 				err := errors.New("minimum must be greater than 2")
 				return err
 			}
-			err := exporter.Execute(namespace, service, development, start, end, minimum)
+			err := exporter.Execute(namespace, service, start, end, minimum, project, development)
 			return err
 		},
 	}

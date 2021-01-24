@@ -6,7 +6,8 @@ import (
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func Execute(namespace string, service string, development bool, start int, end int, minimum int) error {
+func Execute(namespace string, service string, start int, end int, minimum int,
+	project string, development bool) error {
 	clientset, err := k8sAuth(development)
 	if err != nil {
 		return err
@@ -35,7 +36,10 @@ func Execute(namespace string, service string, development bool, start int, end 
 				return err
 			}
 		case <-ticker.C:
-			export(start, end, minimum, count)
+			err = export(start, end, minimum, count)
+			if err != nil {
+				return err
+			}
 		}
 	}
 }
