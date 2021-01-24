@@ -40,7 +40,6 @@ func Execute(project string, location string, cluster string,
 			if err != nil {
 				return err
 			}
-			fmt.Println(pods)
 		case <-ticker.C:
 			count := len(pods)
 			if count == 0 {
