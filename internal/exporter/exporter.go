@@ -42,6 +42,10 @@ func Execute(project string, location string, cluster string,
 			}
 			fmt.Println(pods)
 		case <-ticker.C:
+			count := len(pods)
+			if count == 0 {
+				break
+			}
 			err = export(project, location, cluster, namespace, start, end, minimum, pods)
 			if err != nil {
 				return err
