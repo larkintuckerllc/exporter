@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: exporter
+  labels:
+    app: exporter
+data:
+  namespace: namespace-1
+  service: app-1
+  start: "1"
+  end: "2"
+  minimum: "3"
+  project: "red-forklift-301112" 
+

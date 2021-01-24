@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exporter
+  labels:
+    app: exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: exporter
+  template:
+    metadata:
+      labels:
+        app: exporter
+    spec:
+      containers:
+      - name: exporter
+        args:
+        - --namespace $(NAMESPACE)
+        - --service $(SERVICE)
+        - --start $(START)
+        - --end $(END)
+        - --minimum $(MINIMUM)
+        - --project $(PROJECT)
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            configMapKeyRef:
+              name: exporter
+              key: namespace
+        - name: SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: exporter
+              key: service
+        - name: START
+          valueFrom:
+            configMapKeyRef:
+              name: exporter
+              key: start
+        - name: END
+          valueFrom:
+            configMapKeyRef:
+              name: exporter
+              key: end
+        - name: MINIMUM
+          valueFrom:
+            configMapKeyRef:
+              name: exporter
+              key: minimum
+        - name: PROJECT
+          valueFrom:
+            configMapKeyRef:
+              name: exporter
+              key: project
+        image: sckmkny/exporter:0.1.0
+      serviceAccountName: exporter
+
