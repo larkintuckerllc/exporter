@@ -8,7 +8,7 @@ data:
   namespace: namespace-1
   service: app-1
   start: "1"
-  end: "2"
+  end: "23"
   minimum: "3"
   project: red-forklift-301112 
 
