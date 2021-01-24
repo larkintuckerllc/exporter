@@ -36,6 +36,9 @@ func Execute(namespace string, service string, start int, end int, minimum int,
 				return err
 			}
 		case <-ticker.C:
+			if count == 0 {
+				break
+			}
 			err = export(start, end, minimum, count, project, namespace, service)
 			if err != nil {
 				return err
