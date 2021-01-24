@@ -43,16 +43,16 @@ func export(start int, end int, minimum int, count int, project string,
 		TimeSeries: []*monitoringpb.TimeSeries{
 			{
 				Metric: &metricpb.Metric{
-					Type: "external.googleapis.com/exporter",
-					Labels: map[string]string{
-						"namespace": namespace,
-						"service":   service,
-					},
+					Type: "custom.googleapis.com/exporter",
 				},
 				Resource: &monitoredrespb.MonitoredResource{
 					Type: "global",
 					Labels: map[string]string{
-						"project_id": project,
+						"project_id":     project,
+						"location":       "us-central1",
+						"cluster_name":   "cluster-1",
+						"namespace_name": namespace,
+						"pod_name":       "FUCK ME",
 					},
 				},
 				Points: []*monitoringpb.Point{

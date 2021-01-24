@@ -20,8 +20,8 @@ func main() {
 				Usage: "namespace name",
 			},
 			&cli.StringFlag{
-				Name:     "service",
-				Usage:    "service name",
+				Name:     "app",
+				Usage:    "app label",
 				Required: true,
 			},
 			&cli.IntFlag{
@@ -50,7 +50,7 @@ func main() {
 		},
 		Action: func(c *cli.Context) error {
 			namespace := c.String("namespace")
-			service := c.String("service")
+			app := c.String("app")
 			start := c.Int("start")
 			end := c.Int("end")
 			minimum := c.Int("minimum")
@@ -64,7 +64,7 @@ func main() {
 				err := errors.New("minimum must be greater than 2")
 				return err
 			}
-			err := exporter.Execute(namespace, service, start, end, minimum, project, development)
+			err := exporter.Execute(namespace, app, start, end, minimum, project, development)
 			return err
 		},
 	}
