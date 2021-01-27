@@ -11,6 +11,6 @@ data:
   namespace: namespace-1
   app: app-1
   start: "1"
-  end: "23"
+  end: "2"
   minimum: "3"
 

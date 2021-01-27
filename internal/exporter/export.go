@@ -19,7 +19,7 @@ func export(project string, location string, cluster string,
 	count := len(pods)
 	hour := time.Now().UTC().Hour()
 	var value int64 = 0
-	if (start < end && hour >= start && hour <= end) || (start > end && (hour >= start || hour <= end)) {
+	if (start < end && hour >= start && hour < end) || (start > end && (hour >= start || hour < end)) {
 		m := float64(minimum)
 		c := float64(count)
 		value = int64(math.Ceil((m / c) * 100))

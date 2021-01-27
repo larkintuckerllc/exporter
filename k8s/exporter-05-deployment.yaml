@@ -66,5 +66,5 @@ spec:
             configMapKeyRef:
               name: exporter
               key: minimum
-        image: sckmkny/exporter:0.1.4
+        image: sckmkny/exporter:0.1.5
       serviceAccountName: exporter
