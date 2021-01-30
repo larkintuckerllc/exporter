@@ -8,5 +8,5 @@ metadata:
 rules:
 - apiGroups: ["autoscaling"]
   resources:
-  - hpa
+  - horizontalpodautoscalers
   verbs: ["get", "list", "watch"]
