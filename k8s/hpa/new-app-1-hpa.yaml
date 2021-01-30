@@ -1,4 +1,4 @@
-apiVersion: autoscaling/v2beta1
+apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   name: app-1
@@ -12,17 +12,16 @@ spec:
   - type: Resource
     resource:
       name: cpu
-      targetAverageUtilization: 80
-  - external:
-      metricName: custom.googleapis.com|exporter
-      metricSelector:
-        matchLabels:
-          resource.labels.project_id: red-forklift-301112
-          resource.labels.location: us-central1-c
-          resource.labels.namespace: namespace-1
-          resource.labels.node_id: app-1
-      targetAverageValue: 100
-    type: External
+      target:
+        type: Utilization
+        averageUtilization: 80
+  - type: External
+    external:
+      metric:
+        name: custom.googleapis.com|exporter
+      target:
+        type: AverageValue
+        averageValue: 100
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
