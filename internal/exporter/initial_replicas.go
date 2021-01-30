@@ -2,10 +2,10 @@ package exporter
 
 import (
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes/typed/autoscaling/v2beta1"
+	"k8s.io/client-go/kubernetes/typed/autoscaling/v2beta2"
 )
 
-func initialReplicas(api v2beta1.HorizontalPodAutoscalerInterface, hpa string) (int32, string, error) {
+func initialReplicas(api v2beta2.HorizontalPodAutoscalerInterface, hpa string) (int32, string, error) {
 	getOptions := metaV1.GetOptions{}
 	hpaObject, err := api.Get(hpa, getOptions)
 	if err != nil {

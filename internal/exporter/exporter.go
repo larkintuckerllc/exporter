@@ -14,7 +14,7 @@ func Execute(project string, location string, cluster string,
 	if err != nil {
 		return err
 	}
-	api := clientset.AutoscalingV2beta1().HorizontalPodAutoscalers(namespace)
+	api := clientset.AutoscalingV2beta2().HorizontalPodAutoscalers(namespace)
 	replicas, resourceVersion, err := initialReplicas(api, hpa)
 	if err != nil {
 		return err
