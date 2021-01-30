@@ -35,8 +35,8 @@ func main() {
 				Usage: "namespace name",
 			},
 			&cli.StringFlag{
-				Name:     "app",
-				Usage:    "app label",
+				Name:     "hpa",
+				Usage:    "hpa name",
 				Required: true,
 			},
 			&cli.IntFlag{
@@ -63,7 +63,7 @@ func main() {
 			location := c.String("location")
 			cluster := c.String("cluster")
 			namespace := c.String("namespace")
-			app := c.String("app")
+			hpa := c.String("hpa")
 			start := c.Int("start")
 			end := c.Int("end")
 			minimum := c.Int("minimum")
@@ -76,7 +76,7 @@ func main() {
 				err := errors.New("minimum must be greater than 2")
 				return err
 			}
-			err := exporter.Execute(project, location, cluster, namespace, app, start, end, minimum, development)
+			err := exporter.Execute(project, location, cluster, namespace, hpa, start, end, minimum, development)
 			return err
 		},
 	}
