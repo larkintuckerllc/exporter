@@ -2,7 +2,6 @@ package exporter
 
 import (
 	"context"
-	"fmt"
 	"math"
 	"time"
 
@@ -15,7 +14,6 @@ import (
 
 func export(projectID string, location string, namespace string, nodeID string,
 	start int, end int, minimum int, replicas int32) error {
-	fmt.Println(replicas)
 	var value int64 = 0
 	hour := time.Now().UTC().Hour()
 	if (start < end && hour >= start && hour < end) || (start > end && (hour >= start || hour < end)) {
@@ -23,7 +21,6 @@ func export(projectID string, location string, namespace string, nodeID string,
 		r := float64(replicas)
 		value = int64(math.Ceil((m / r) * 100))
 	}
-	fmt.Println(value)
 	ctx := context.Background()
 	client, err := monitoring.NewMetricClient(ctx)
 	if err != nil {

@@ -19,6 +19,12 @@ spec:
     external:
       metric:
         name: custom.googleapis.com|exporter
+        selector:
+          matchLabels:
+            resource.labels.project_id: red-forklift-301112
+            resource.labels.location: us-central1-c
+            resource.labels.namespace: namespace-1
+            resource.labels.node_id: app-1
       target:
         type: Value
         value: 100
