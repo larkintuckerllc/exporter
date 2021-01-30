@@ -1,11 +1,12 @@
 apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRole
+kind: Role
 metadata:
   name: exporter
   labels:
     app: exporter
+  namespace: namespace-1
 rules:
-- apiGroups: [""]
+- apiGroups: ["autoscaling"]
   resources:
-  - pods
+  - hpa
   verbs: ["get", "list", "watch"]

@@ -4,6 +4,7 @@ metadata:
   name: exporter
   labels:
     app: exporter
+  namespace: namespace-1
 spec:
   replicas: 1
   selector:
@@ -21,7 +22,7 @@ spec:
         - --location=$(LOCATION)
         - --cluster=$(CLUSTER)
         - --namespace=$(NAMESPACE)
-        - --app=$(APP)
+        - --hpa=$(HPA)
         - --start=$(START)
         - --end=$(END)
         - --minimum=$(MINIMUM)
@@ -46,11 +47,11 @@ spec:
             configMapKeyRef:
               name: exporter
               key: namespace
-        - name: APP
+        - name: HPA
           valueFrom:
             configMapKeyRef:
               name: exporter
-              key: app
+              key: hpa
         - name: START
           valueFrom:
             configMapKeyRef:
@@ -66,5 +67,5 @@ spec:
             configMapKeyRef:
               name: exporter
               key: minimum
-        image: sckmkny/exporter:0.1.5
+        image: sckmkny/exporter:0.2.0
       serviceAccountName: exporter
