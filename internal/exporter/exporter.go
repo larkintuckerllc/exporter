@@ -1,7 +1,7 @@
 package exporter
 
 import (
-	"fmt"
+	"time"
 
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -19,8 +19,6 @@ func Execute(project string, location string, cluster string,
 	if err != nil {
 		return err
 	}
-	fmt.Println(replicas)
-	fmt.Println(resourceVersion)
 	listOptions := metaV1.ListOptions{
 		ResourceVersion: resourceVersion,
 	}
@@ -30,6 +28,8 @@ func Execute(project string, location string, cluster string,
 	}
 	defer watcher.Stop()
 	updater := watcher.ResultChan()
+	ticker := time.NewTicker(60 * time.Second)
+	defer ticker.Stop()
 	for {
 		select {
 		case update := <-updater:
@@ -37,30 +37,11 @@ func Execute(project string, location string, cluster string,
 			if err != nil {
 				return err
 			}
-			fmt.Println(replicas)
-		}
-	}
-	/*
-		updater := watcher.ResultChan()
-		ticker := time.NewTicker(60 * time.Second)
-		defer ticker.Stop()
-		for {
-			select {
-			case update := <-updater:
-				pods, err = updatePods(update, pods)
-				if err != nil {
-					return err
-				}
-			case <-ticker.C:
-				count := len(pods)
-				if count == 0 {
-					break
-				}
-				err = export(project, location, cluster, namespace, start, end, minimum, pods)
-				if err != nil {
-					return err
-				}
+		case <-ticker.C:
+			err = export(project, location, namespace, hpa, start, end, minimum, replicas)
+			if err != nil {
+				return err
 			}
 		}
-	*/
+	}
 }

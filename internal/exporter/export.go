@@ -12,16 +12,13 @@ import (
 	monitoringpb "google.golang.org/genproto/googleapis/monitoring/v3"
 )
 
-func export(project string, location string, cluster string,
-	namespace string,
-	start int, end int, minimum int,
-	pods []string) error {
-	count := len(pods)
-	hour := time.Now().UTC().Hour()
+func export(projectID string, location string, namespace string, nodeID string,
+	start int, end int, minimum int, replicas int32) error {
 	var value int64 = 0
+	hour := time.Now().UTC().Hour()
 	if (start < end && hour >= start && hour < end) || (start > end && (hour >= start || hour < end)) {
 		m := float64(minimum)
-		c := float64(count)
+		c := float64(replicas)
 		value = int64(math.Ceil((m / c) * 100))
 	}
 	ctx := context.Background()
@@ -41,33 +38,30 @@ func export(project string, location string, cluster string,
 			},
 		},
 	}
-	for _, pod := range pods {
-		err = client.CreateTimeSeries(ctx, &monitoringpb.CreateTimeSeriesRequest{
-			Name: monitoring.MetricProjectPath(project),
-			TimeSeries: []*monitoringpb.TimeSeries{
-				{
-					Metric: &metricpb.Metric{
-						Type: "custom.googleapis.com/exporter",
-					},
-					Resource: &monitoredrespb.MonitoredResource{
-						Type: "k8s_pod",
-						Labels: map[string]string{
-							"project_id":     project,
-							"location":       location,
-							"cluster_name":   cluster,
-							"namespace_name": namespace,
-							"pod_name":       pod,
-						},
-					},
-					Points: []*monitoringpb.Point{
-						dataPoint,
+	err = client.CreateTimeSeries(ctx, &monitoringpb.CreateTimeSeriesRequest{
+		Name: monitoring.MetricProjectPath(projectID),
+		TimeSeries: []*monitoringpb.TimeSeries{
+			{
+				Metric: &metricpb.Metric{
+					Type: "custom.googleapis.com/exporter",
+				},
+				Resource: &monitoredrespb.MonitoredResource{
+					Type: "generic_node",
+					Labels: map[string]string{
+						"project_id": projectID,
+						"location":   location,
+						"namespace":  namespace,
+						"node_id":    nodeID,
 					},
 				},
+				Points: []*monitoringpb.Point{
+					dataPoint,
+				},
 			},
-		})
-		if err != nil {
-			return err
-		}
+		},
+	})
+	if err != nil {
+		return err
 	}
 	err = client.Close()
 	if err != nil {
