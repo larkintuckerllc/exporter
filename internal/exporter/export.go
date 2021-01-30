@@ -20,8 +20,8 @@ func export(projectID string, location string, namespace string, nodeID string,
 	hour := time.Now().UTC().Hour()
 	if (start < end && hour >= start && hour < end) || (start > end && (hour >= start || hour < end)) {
 		m := float64(minimum)
-		c := float64(replicas)
-		value = int64(math.Ceil((m / c) * 100))
+		r := float64(replicas)
+		value = int64(math.Ceil((m / r) * 100))
 	}
 	fmt.Println(value)
 	ctx := context.Background()
