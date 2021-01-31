@@ -1,4 +1,4 @@
-apiVersion: autoscaling/v2beta1
+apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   name: app-1
@@ -12,9 +12,13 @@ spec:
   - type: Resource
     resource:
       name: cpu
-      targetAverageUtilization: 80
+      target:
+        type: Utilization
+        averageUtilization: 80
+      target:
+        type: Value
+        value: 100
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
     name: app-1
-
